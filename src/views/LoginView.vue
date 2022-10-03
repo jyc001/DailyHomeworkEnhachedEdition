@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import HelloWorld from "@/App.vue";
-import {nextTick, onMounted, reactive, ref} from "vue";
+import {ref} from "vue";
 import api from "@/api";
 import {ElMessage} from "element-plus";
 import QRCode from "qrcode";
@@ -16,7 +15,6 @@ api.genQrCode().then(data => {
     ElMessage.error("二维码生成错误请重试！")
   })
 })
-
 </script>
 
 <template>
