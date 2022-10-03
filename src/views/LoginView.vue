@@ -4,7 +4,8 @@ import HelloWorld from "@/App.vue";
 </script>
 
 <template>
-  <HelloWorld/>
+ <h1>Login in </h1>
+  请使用手机微信或每日交作业小程序扫码
 </template>
 
 <style scoped>
