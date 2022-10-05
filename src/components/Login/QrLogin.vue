@@ -12,7 +12,7 @@ api.genQrCode().then(resp => {
     errorCorrectionLevel: "H"
   }).then(url => {
     QrBase64.value = url
-    tim1=setInterval(checkQrCode,2500,resp.data.data.code)
+    tim1=setInterval(checkQrCode,1000,resp.data.data.code)
   }).catch(err => {
     ElMessage.error("二维码生成错误请重试！")
   })
@@ -22,7 +22,7 @@ const checkQrCode = function (code:string) {
   // console.log(code)
   api.checkQrCode(code)
   console.log(tim1)
-  // clearTimeout(tim1)
+  clearInterval(tim1)
 }
 </script>
 
