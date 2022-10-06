@@ -25,9 +25,9 @@ const errorHandle = (status: number, other: string) => {
 
         // case 302: ElMessage.error('接口重定向了！');
         //     break;
-        // case 400:
-        //     ElMessage.error("发出的请求有错误，服务器没有进行新建或修改数据的操作==>" + status)
-        //     break;
+        case 400:
+            ElMessage.error("请求参数错误，服务器无法处理==>" + status)
+            break;
         // // 401: 未登录
         // // 未登录则跳转登录页面，并携带当前页面的路径
         // // 在登录成功后返回当前页面，这一步需要在登录页操作。
@@ -50,9 +50,9 @@ const errorHandle = (status: number, other: string) => {
         //         });
         //     }, 1000);
         //     break;
-        // case 404:
-        //     ElMessage.error("网络请求不存在==>" + status)
-        //     break;
+        case 404:
+            ElMessage.error("请求地址不存在==>" + status)
+            break;
         // case 406:
         //     ElMessage.error("请求的格式不可得==>" + status)
         //     break;
@@ -162,7 +162,7 @@ instance.interceptors.response.use(function (config) {
 
         removePending(config.config);
         // 请求成功
-        if (config.status === 200 || config.status === 204) {
+        if (config.status === 200) {
             return Promise.resolve(config);
         } else {
             return Promise.reject(config);

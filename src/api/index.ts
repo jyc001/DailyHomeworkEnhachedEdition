@@ -8,6 +8,7 @@ class api {
     /* api接口模块 */
     public static Login = {
         genQrCode:() => Request.post('/v1/auth/genQrCode'),
+        // genQrCode:() => Request.post('/auth/genQrCode'),
         checkQrCode:(code:string)=>Request.post('/v1/auth/checkQrCode', {"code":code})
 
     }
