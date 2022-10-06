@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import QrLogin from "@/components/Login/QrLogin.vue";
-
 </script>
 
 <template>
