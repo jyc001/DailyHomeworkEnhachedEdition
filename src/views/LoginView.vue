@@ -5,11 +5,9 @@ import img1 from "@/assets/20200306154952.jpg"
 </script>
 
 <template>
-  <!--  <el-header class="header">-->
 
-  <h2 class="title">每日交作业</h2>
-  <!--  </el-header>-->
-  <div style="display:flex;">
+  <div class="login-container">
+    <el-image class="img1" :src="img1" fit="cover"/>
     <el-main class="main-card">
       <el-tabs type="border-card">
         <el-tab-pane label="二维码登录">
@@ -24,9 +22,13 @@ import img1 from "@/assets/20200306154952.jpg"
 
 
 <style scoped>
-.el-image {
-  width: 260px;
-  height: 260px;
+.login-container {
+  display: flex;
+  position: fixed;
+  justify-content: flex-start;
+  align-content: center;
+  width: 100%;
+  height: 100%
 }
 
 .title {
@@ -38,11 +40,23 @@ import img1 from "@/assets/20200306154952.jpg"
   box-shadow: 1px 0 5px #888888;
 }
 
+.img1 {
+  width: 100%;
+  height: 100%;
+  flex-basis: 50%;
+
+
+}
+@media only screen and (max-width: 991px){
+  .img1{
+    display: none;
+  }
+
+}
+
 .main-card {
 
-  justify-content: center;
-  /*width: 25vh;*/
-  align-self: center;
-  align-items:center;
+  flex-basis: 50%;
+
 }
 </style>
