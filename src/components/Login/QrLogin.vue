@@ -15,7 +15,7 @@ api.Login.genQrCode().then(resp => {
       .then(url => {
         QrBase64.value = url
         tim1 = setInterval(checkQrCode, 1000, resp.data.data.code)
-      }).catch(err => {
+      }).catch(() => {
     ElMessage.error("二维码生成错误请重试！")
   })
 })
