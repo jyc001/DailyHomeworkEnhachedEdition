@@ -37,12 +37,29 @@ const checkQrCode = function (code: string) {
 }
 </script>
 
-<template>
-  请使用手机微信或每日交作业小程序扫码
-  <el-image :src="QrBase64" fit="fill"/>
-  <h1 v-show="userRealName">登录成功，欢迎{{userRealName}}</h1>
+<template style="align-items: center">
+  <div class="qr-login">
+    <h5>请使用手机微信或每日交作业小程序扫码</h5>
+    <el-image :src="QrBase64" fit="contain" class="el-image"/>
+    <h1 v-show="userRealName">登录成功，欢迎{{ userRealName }}</h1>
+  </div>
 </template>
 
 <style scoped>
+h5 {
+  /*text-align: center;*/
+}
 
+.qr-login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+
+.el-image {
+  width: 260px;
+  height: 260px;
+}
 </style>

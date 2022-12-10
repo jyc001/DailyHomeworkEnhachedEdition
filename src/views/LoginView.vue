@@ -8,14 +8,17 @@ import img1 from "@/assets/20200306154952.jpg"
 
   <div class="login-container">
     <el-image class="img1" :src="img1" fit="cover"/>
-    <el-main class="main-card">
-      <el-tabs type="border-card">
-        <el-tab-pane label="二维码登录">
-          <QrLogin/>
-        </el-tab-pane>
-        <el-tab-pane label="Config">Config</el-tab-pane>
-      </el-tabs>
-    </el-main>
+    <div class="login-card">
+      <h2 style="margin: 0;text-align: center;">欢迎使用每日交作业增强版</h2>
+      <el-main>
+        <el-tabs type="border-card" class="border-card">
+          <el-tab-pane label="二维码登录">
+            <QrLogin/>
+          </el-tab-pane>
+          <el-tab-pane label="Config">Config</el-tab-pane>
+        </el-tabs>
+      </el-main>
+    </div>
   </div>
 
 </template>
@@ -25,8 +28,9 @@ import img1 from "@/assets/20200306154952.jpg"
 .login-container {
   display: flex;
   position: fixed;
-  justify-content: flex-start;
-  align-content: center;
+  justify-content: space-between;
+  /*align-content: center;*/
+  align-items: center;
   width: 100%;
   height: 100%
 }
@@ -47,16 +51,33 @@ import img1 from "@/assets/20200306154952.jpg"
 
 
 }
-@media only screen and (max-width: 991px){
-  .img1{
-    display: none;
-  }
+
+
+
+.login-card {
+  /*flex-basis: 50%;*/
+  align-self: center;
+  margin-right: 15vw;
+  /*flex-grow: 1;*/
+
 
 }
 
-.main-card {
+.border-card {
+  box-shadow: 0px 3px 4px 0px #909399;
+  border-radius: 0 0 1em 1em;
 
-  flex-basis: 50%;
+}
 
+@media only screen and (max-width: 991px) {
+  .img1 {
+    display: none;
+  }
+  .login-card{
+    margin: 0;
+  }
+.login-container{
+  justify-content: center;
+}
 }
 </style>
