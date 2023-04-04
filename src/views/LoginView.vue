@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import QrLogin from "@/components/Login/QrLogin.vue";
 import img1 from "@/assets/20200306154952.jpg"
+import UsernameAndPasswordLogin from "@/components/Login/UsernameAndPasswordLogin.vue";
+import {ElMessage} from "element-plus";
+
+function onLoginSuccess() {
+    ElMessage.success('登陆成功，后续待开发');
+}
 
 </script>
 
@@ -11,11 +17,13 @@ import img1 from "@/assets/20200306154952.jpg"
     <div class="login-card">
       <h2 style="margin: 0;text-align: center;">欢迎使用每日交作业增强版</h2>
       <el-main>
-        <el-tabs type="border-card" class="border-card">
+        <el-tabs type="card" class="card">
           <el-tab-pane label="二维码登录">
-            <QrLogin/>
+            <QrLogin  @loginSuccess="onLoginSuccess"/>
           </el-tab-pane>
-          <el-tab-pane label="Config">Config</el-tab-pane>
+          <el-tab-pane label="密码登录">
+            <UsernameAndPasswordLogin/>
+          </el-tab-pane>
         </el-tabs>
       </el-main>
     </div>
@@ -53,7 +61,6 @@ import img1 from "@/assets/20200306154952.jpg"
 }
 
 
-
 .login-card {
   /*flex-basis: 50%;*/
   align-self: center;
@@ -63,21 +70,25 @@ import img1 from "@/assets/20200306154952.jpg"
 
 }
 
-.border-card {
-  box-shadow: 0px 3px 4px 0px #909399;
-  border-radius: 0 0 1em 1em;
+.card {
+  /*box-shadow: 0px 3px 4px 0px #909399;*/
+  /*border-radius: 0 0 1em 1em;*/
 
 }
+
 
 @media only screen and (max-width: 991px) {
   .img1 {
     display: none;
   }
-  .login-card{
+
+  .login-card {
     margin: 0;
   }
-.login-container{
-  justify-content: center;
+
+  .login-container {
+    justify-content: center;
+  }
 }
-}
+
 </style>
