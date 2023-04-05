@@ -1,14 +1,3 @@
-import {ref, computed, reactive} from 'vue'
-import {defineStore} from 'pinia'
-
-export const useUserInfoStore = defineStore('userInfo', () => {
-    const token = ref("")
-    const userInfo = ref<UserInfo>();
-
-
-    return {token, userInfo}
-})
-
 export interface UserInfo {
     openId: string
     userRealName: string

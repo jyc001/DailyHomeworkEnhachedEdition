@@ -3,13 +3,12 @@ import {ref} from "vue";
 import QRCode from "qrcode";
 import {ElMessage} from "element-plus";
 import {api} from "@/api";
-import {useUserInfoStore} from "@/stores/UserInfo";
+import {useUserInfoStore} from "@/stores/User";
 
 const emit = defineEmits(["loginSuccess"])
 let QrBase64 = ref<string | null>()
 let tim1 = 0
 let tim2 = 0
-let userRealName = ref<string | null>()
 const userInfo=useUserInfoStore();
 function GenQrCode() {
     clearInterval(tim1);
@@ -60,7 +59,7 @@ function checkQrCode(code: string) {
     <div class="qr-login">
         <h5>请使用手机微信或每日交作业小程序扫码</h5>
         <el-image :src="QrBase64" fit="contain" class="el-image"/>
-        <h1 v-show="userRealName">登录成功，欢迎{{ userRealName }}</h1>
+<!--        <h1 v-show="userRealName">登录成功，欢迎{{ userRealName }}</h1>-->
     </div>
 </template>
 
