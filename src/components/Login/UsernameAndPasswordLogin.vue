@@ -47,13 +47,13 @@ const resetForm = (formEl: FormInstance | undefined) => {
       class="ruleForm"
       size="default"
       status-icon
-      disabled
+
   >
     <el-form-item label="手机号" prop="name">
-      <el-input v-model="ruleForm.name" placeholder="手机号"/>
+      <el-input ::="ruleForm.name" placeholder="手机号"/>
     </el-form-item>
     <el-form-item label="密码" prop="password">
-      <el-input v-model="ruleForm.password" type="password" show-password placeholder="密码"/>
+      <el-input ::="ruleForm.password" type="password" show-password placeholder="密码"/>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submitForm(ruleFormRef)">

@@ -1,15 +1,19 @@
 <script lang="ts" setup>
-import {ref} from "vue";
+import {defineComponent, ref} from "vue";
 import QRCode from "qrcode";
 import {ElMessage} from "element-plus";
 import {api} from "@/api";
 import {useUserInfoStore} from "@/stores/User";
 
-const emit = defineEmits(["loginSuccess"])
+const emits = defineEmits<{
+    (e: 'loginSuccess'): void
+}>()
+// const emits=defineEmits(["loginSuccess"])
+let test=$ref(0)
 let QrBase64 = ref<string | null>()
 let tim1 = 0
 let tim2 = 0
-const userInfo=useUserInfoStore();
+const userInfo = useUserInfoStore();
 function GenQrCode() {
     clearInterval(tim1);
     clearTimeout(tim2);
@@ -23,7 +27,7 @@ function GenQrCode() {
                 QrBase64.value = url
                 tim1 = setInterval(checkQrCode, 1000, resp.data.data.code)
                 // console.log(timeStampNow)
-                const expTime = (resp.data.data.expireAt - (Date.parse(new Date().toString()) / 1000))*1000
+                const expTime = (resp.data.data.expireAt - (Date.parse(new Date().toString()) / 1000)) * 1000
                 console.log(`QR expire after:${expTime} ms`)
                 tim2 = window.setTimeout(GenQrCode, expTime)
             }).catch(() => {
@@ -42,24 +46,27 @@ function checkQrCode(code: string) {
             clearInterval(tim1);
             clearTimeout(tim2);
             // ElMessage.success("登陆成功，后续待开发");
-            userInfo.token=resp.data.data.token
-            userInfo.userInfo=resp.data.data.user
+            userInfo.token = resp.data.data.token
+            userInfo.userInfo = resp.data.data.user
             console.log(resp.data.data.user.userRealName);
             // userRealName.value = resp.data.data.user.userRealName
-            emit("loginSuccess")
+            emits("loginSuccess")
         }
-
     })
     // console.log(tim1)
     // clearInterval(tim1)
+}
+function t1est(){
+    test++;
 }
 </script>
 
 <template style="align-items: center">
     <div class="qr-login">
         <h5>请使用手机微信或每日交作业小程序扫码</h5>
+        <h5  @click="t1est">{{test}}</h5>
         <el-image :src="QrBase64" fit="contain" class="el-image"/>
-<!--        <h1 v-show="userRealName">登录成功，欢迎{{ userRealName }}</h1>-->
+        <!--        <h1 v-show="userRealName">登录成功，欢迎{{ userRealName }}</h1>-->
     </div>
 </template>
 
