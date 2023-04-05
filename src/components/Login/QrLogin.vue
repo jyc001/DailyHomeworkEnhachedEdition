@@ -3,7 +3,7 @@ import {defineComponent, ref} from "vue";
 import QRCode from "qrcode";
 import {ElMessage} from "element-plus";
 import {api} from "@/api";
-import {useUserInfoStore} from "@/stores/User";
+import {useUserStore} from "@/stores/User";
 
 const emits = defineEmits<{
     (e: 'loginSuccess'): void
@@ -13,7 +13,7 @@ let test=$ref(0)
 let QrBase64 = ref<string | null>()
 let tim1 = 0
 let tim2 = 0
-const userInfo = useUserInfoStore();
+const userInfo = useUserStore();
 function GenQrCode() {
     clearInterval(tim1);
     clearTimeout(tim2);

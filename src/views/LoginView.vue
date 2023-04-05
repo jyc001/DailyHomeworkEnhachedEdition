@@ -2,10 +2,19 @@
 import QrLogin from "@/components/Login/QrLogin.vue";
 import img1 from "@/assets/20200306154952.jpg"
 import UsernameAndPasswordLogin from "@/components/Login/UsernameAndPasswordLogin.vue";
-import {ElMessage} from "element-plus";
+import {ElMessage, ElNotification} from "element-plus";
+import {useRouteHash} from "@vueuse/router";
+import {useRouter} from "vue-router";
 
+
+let router=useRouter()
 function onLoginSuccess() {
-    ElMessage.success('登陆成功，后续待开发');
+    ElNotification({
+        title: '登陆成功',
+        message: '登陆成功！',
+        type: 'success',
+    })
+    router.replace({name:'workList'})
 }
 
 </script>

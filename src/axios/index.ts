@@ -1,14 +1,21 @@
 // index.ts
-import router from "@/router";
-import {ElMessage} from "element-plus";
+import {ElMessage, ElNotification} from "element-plus";
 import type {AxiosRequestConfig, Method} from "axios";
 import axios from "axios";
 import {Base} from "@/axios/base";
+import {useRouter} from "vue-router";
+import {useUserStore} from "@/stores/User";
+// @ts-ignore
+import {base64} from "@/util/base64"
+// @ts-ignore
+import {md5} from "@/util/md5"
 
 /**
  * 跳转登录页
  * 携带当前页面路由，以期在登录页面完成登录后返回当前页面
  */
+const router = useRouter()
+
 const toLogin = () => {
     router.replace({
         name: 'login',
@@ -27,7 +34,11 @@ const errorHandle = (status: number, other: string) => {
         // case 302: ElMessage.error('接口重定向了！');
         //     break;
         case 400:
-            ElMessage.error("请求参数错误，服务器无法处理==>" + status)
+            ElNotification({
+                title: '错误',
+                message: "请求参数错误，服务器无法处理==>" + status,
+                type: 'error',
+            })
             break;
         // // 401: 未登录
         // // 未登录则跳转登录页面，并携带当前页面的路径
@@ -52,7 +63,11 @@ const errorHandle = (status: number, other: string) => {
         //     }, 1000);
         //     break;
         case 404:
-            ElMessage.error("请求地址不存在==>" + status)
+            ElNotification({
+                title: '错误',
+                message: "请求地址不存在==>" + status,
+                type: 'error',
+            })
             break;
         // case 406:
         //     ElMessage.error("请求的格式不可得==>" + status)
@@ -78,7 +93,11 @@ const errorHandle = (status: number, other: string) => {
         //     ElMessage.error("网关超时==>" + status)
         //     break;
         default:
-            ElMessage.error("其他错误错误==>" + status)
+            ElNotification({
+                title: '错误',
+                message: "其他错误错误==>" + status,
+                type: 'error',
+            })
     }
 }
 
@@ -88,26 +107,25 @@ interface PendingType {
     method?: Method;
     params: any;
     data: any;
-    cancel: any;
 }
 // 取消重复请求
 const pending: Array<PendingType> = [];
 const CancelToken = axios.CancelToken;
 
 // 移除重复请求
-const removePending = (config: AxiosRequestConfig) => {
-    for (const key in pending) {
-        const item: number = +key;
-        const list: PendingType = pending[key];
-        // 当前请求在数组中存在时执行函数体
-        if (list.url === config.url && list.method === config.method && JSON.stringify(list.params) === JSON.stringify(config.params) && JSON.stringify(list.data) === JSON.stringify(config.data)) {
-            // 执行取消操作
-            list.cancel('操作太频繁，请稍后再试');
-            // 从数组中移除记录
-            pending.splice(item, 1);
-        }
-    }
-};
+// const removePending = (config: AxiosRequestConfig) => {
+//     for (const key in pending) {
+//         const item: number = +key;
+//         const list: PendingType = pending[key];
+//         // 当前请求在数组中存在时执行函数体
+//         if (list.url === config.url && list.method === config.method && JSON.stringify(list.params) === JSON.stringify(config.params) && JSON.stringify(list.data) === JSON.stringify(config.data)) {
+//             // 执行取消操作
+//             list.cancel('操作太频繁，请稍后再试');
+//             // 从数组中移除记录
+//             pending.splice(item, 1);
+//         }
+//     }
+// };
 
 /* 实例化请求配置 */
 const instance = axios.create({
@@ -132,23 +150,42 @@ const instance = axios.create({
  */
 instance.interceptors.request.use(
     config => {
+        const user=useUserStore()
 
-        removePending(config);
-        config.cancelToken = new CancelToken((c) => {
-            // @ts-ignore
-            pending.push({ url: config.url, method: config.method, params: config.params, data: config.data, cancel: c });
-        });
+        // removePending(config);
+        const controller = new AbortController();
+        config.signal=controller.signal
+        // @ts-ignore
+        pending.push({ url: config.url, method: config.method, params: config.params, data: config.data});
         // 登录流程控制中，根据本地是否存在token判断用户的登录情况
         // 但是即使token存在，也有可能token是过期的，所以在每次的请求头中携带token
         // 后台根据携带的token判断用户的登录情况，并返回给我们对应的状态码
         // 而后我们可以在响应拦截器中，根据状态码进行一些统一的操作。
-        // const token = store.state.token;
+        const token = user.token;
         // localStorage.setItem('token', token);
+        if(token!=""){
+            config.headers.token=token
+        }
 
-        // if (storage.get(store.state.Roles)) {
-        //     store.state.Roles
-        //     config.headers.Authorization = storage.get(store.state.Roles);
-        // }
+        if(config.url?.includes('/v1')){
+            config.baseURL='https://api-prod.lulufind.com'
+
+        }
+        else {
+            let headers = {...config.params};
+            let name;
+            const salt = "IF75D4U19LKLDAZSMPN5ATQLGBFEJL4VIL2STVDBNJJTO6LNOGB265CR40I4AL13"; //默认 ”Salt"
+            let prefix = JSON.stringify(headers || {});
+            prefix = base64.encode(prefix) + salt
+            config.headers.sign=md5.hexMD5(prefix)
+
+        }
+        // if(config.url){}
+
+            // if (storage.get(store.state.Roles)) {
+            //     store.state.Roles
+            //     config.headers.Authorization = storage.get(store.state.Roles);
+            // }
         return config;
     },
     error => {
@@ -161,7 +198,7 @@ instance.interceptors.request.use(
 // 响应拦截器
 instance.interceptors.response.use(function (config) {
 
-        removePending(config.config);
+        // removePending(config.config);
         // 请求成功
         if (config.status === 200) {
             return Promise.resolve(config);

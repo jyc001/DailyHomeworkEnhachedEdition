@@ -6,7 +6,7 @@ import {ElMessage} from "element-plus";
 // const formSize = ref('default')
 const ruleFormRef = ref<FormInstance>()
 const ruleForm = reactive({
-  name: '',
+  phoneNumber: '',
   password: '',
 })
 
@@ -50,10 +50,10 @@ const resetForm = (formEl: FormInstance | undefined) => {
 
   >
     <el-form-item label="手机号" prop="name">
-      <el-input ::="ruleForm.name" placeholder="手机号"/>
+      <el-input v-model="ruleForm.phoneNumber" placeholder="手机号"/>
     </el-form-item>
     <el-form-item label="密码" prop="password">
-      <el-input ::="ruleForm.password" type="password" show-password placeholder="密码"/>
+      <el-input v-model="ruleForm.password" type="password" show-password placeholder="密码"/>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submitForm(ruleFormRef)">
