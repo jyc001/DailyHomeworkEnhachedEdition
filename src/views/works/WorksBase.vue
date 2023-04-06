@@ -7,7 +7,7 @@ import {api} from "@/api";
 import {ElMessage} from "element-plus";
 
 const user=useUserStore()
-console.log(user.openId)
+// console.log(user.openId)
 let {userRealName}=$(storeToRefs(user))
 let works=$ref({})
 api.findWork.findWorkNewVersion2().then(resp=>{

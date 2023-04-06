@@ -16,9 +16,15 @@ class api {
     }
     public static findWork = {
 
-        findWorkNewVersion2: (limit=1,start=0,num=5) => {
+        findWorkNewVersion2: (limit = 1, start = 0, num = 5) => {
             const user = useUserStore();
-            return Request.post('mrzy/mrzypc/findWorkNewVersion', {openId: user.openId,limit,start,num})
+            return Request.post('mrzy/mrzypc/findWorkNewVersion', {
+                start: 0,
+                num: 12,
+                beginTime: "1990-01-01 00:00:00",
+                endTime: '2023-04-06 23:59:59',
+                limit: 1
+            })
         }
 
     }

@@ -153,8 +153,6 @@ instance.interceptors.request.use(
         const user=useUserStore()
 
         // removePending(config);
-        const controller = new AbortController();
-        config.signal=controller.signal
         // @ts-ignore
         pending.push({ url: config.url, method: config.method, params: config.params, data: config.data});
         // 登录流程控制中，根据本地是否存在token判断用户的登录情况
@@ -172,20 +170,21 @@ instance.interceptors.request.use(
 
         }
         else {
-            let headers = {...config.params};
+            config.headers["Content-Type"] = "application/x-www-form-urlencoded"
+            let headers = {};
+            console.log(config.data)
             let name;
+            for (name in config.data) { //把req.data 依次存入headers。并在每个item 结尾 加上""
+                // @ts-ignore
+                headers[name] = config.data[name] + "";
+            }
+
             const salt = "IF75D4U19LKLDAZSMPN5ATQLGBFEJL4VIL2STVDBNJJTO6LNOGB265CR40I4AL13"; //默认 ”Salt"
             let prefix = JSON.stringify(headers || {});
             prefix = base64.encode(prefix) + salt
-            config.headers.sign=md5.hexMD5(prefix)
+            config.headers.sign = md5.hexMD5(prefix)
 
         }
-        // if(config.url){}
-
-            // if (storage.get(store.state.Roles)) {
-            //     store.state.Roles
-            //     config.headers.Authorization = storage.get(store.state.Roles);
-            // }
         return config;
     },
     error => {

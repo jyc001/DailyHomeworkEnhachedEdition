@@ -20,6 +20,7 @@ export class Request {
 
     static post = (url: string, params?: any) => {
         return new Promise<AxiosResponse<any,any>>((resolve, reject) => {
+            // console.log(params)
             axios.post(url, params).then(res => {
                 resolve(res);
             }).catch(err => {
