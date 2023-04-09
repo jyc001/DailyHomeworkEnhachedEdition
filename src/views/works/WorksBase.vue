@@ -5,10 +5,12 @@ import {toRefs} from "vue";
 import {$ref} from "vue/macros";
 import {api} from "@/api";
 import {ElMessage} from "element-plus";
+import {useRouter} from "vue-router";
 
 const user = useUserStore()
+const router = useRouter()
 // console.log(user.openId)
-let {userRealName} = $(storeToRefs(user))
+let {token, userRealName} = $(storeToRefs(user))
 let works = $ref<any[]>([])
 let disabled = $ref<boolean>(false)
 let count = 0
@@ -40,6 +42,7 @@ loadData();
 </script>
 
 <template>
+    <el-button type="danger" @click="token='';router.replace('/')">退出登录</el-button>
     <h1>用户名：{{ userRealName }}</h1>
     <textarea disabled>{{works}}</textarea>
     <el-collapse v-infinite-scroll="loadData" :infinite-scroll-disabled="disabled">

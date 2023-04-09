@@ -14,6 +14,9 @@ api.Works.getWorkDetail(workId.value as unknown as number).then(data => {
 </script>
 
 <template>
+    <router-link to="/work/list">
+        <el-button type="primary">返回</el-button>
+    </router-link>
   作业id：{{ workId }}
     <div>{{ work.workTime }}{{ work.submitText }}的{{ work.subject }}作业</div>
     <textarea :value="work.workDetail" disabled/>
