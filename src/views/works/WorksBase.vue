@@ -15,16 +15,23 @@ let count = 0
 
 function loadData() {
     api.Works.findWorkNewVersion(count).then(data => {
+        // console.log(data)
         works.push(...data)
         // console.log(works)
-    })
-        .catch(errCode => {
+        works.sort((a, b) => {
+            a = new Date(a.workTime).getTime()
+            b = new Date(b.workTime).getTime()
+            // console.log(a)
+            // console.log(b)
+            return -(a - b)
+        })
+    }).catch(errCode => {
         switch (errCode as unknown as number) {
             case 201:
                 disabled = true
 
         }
-            // console.log(disabled)
+        // console.log(disabled)
     })
     count += 12
 }

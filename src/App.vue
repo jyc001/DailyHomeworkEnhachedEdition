@@ -3,12 +3,12 @@ import {RouterLink, RouterView} from 'vue-router'
 import {useColorMode, useDark} from "@vueuse/core";
 
 const mode = useColorMode()
-mode.value="auto"
+mode.value = "auto"
 </script>
 
 <template>
     <RouterView/>
-    <h2 class="vinfo">V2304091459-R5</h2>
+    <h2 class="vinfo">V2304091527-R6</h2>
 
 </template>
 
