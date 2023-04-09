@@ -24,7 +24,13 @@ api.Works.getWorkDetail(workId.value as unknown as number).then(data => {
                 <el-text v-if="!user.submitFlag">{{ user.bindName }}:{{ user.submitText }}</el-text>
 
             </template>
-            <img v-for="imageUrl in user.submitCoverList" :src="imageUrl"/>
+            <el-image v-for="(imageUrl,index) in user.submitCoverList" style="width: 100px; height: 100px"
+                      :zoom-rate="1.2"
+                      :preview-src-list="user.submitCoverList"
+                      :src="imageUrl"
+                      :initial-index="index"
+                      fit="contain"
+            />
         </el-collapse-item>
     </el-collapse>
 </template>

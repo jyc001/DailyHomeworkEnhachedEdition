@@ -8,7 +8,7 @@ mode.value = "auto"
 
 <template>
     <RouterView/>
-    <h2 class="vinfo">V2304091527-R6</h2>
+    <h2 class="vinfo">V2304091544-R7</h2>
 
 </template>
 
