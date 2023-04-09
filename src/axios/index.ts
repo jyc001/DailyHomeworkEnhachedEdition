@@ -10,11 +10,13 @@ import {base64} from "@/util/base64"
 // @ts-ignore
 import {md5} from "@/util/md5"
 
+import router from "@/router"
+
 /**
  * 跳转登录页
  * 携带当前页面路由，以期在登录页面完成登录后返回当前页面
  */
-const router = useRouter()
+
 
 const toLogin = () => {
     router.replace({
@@ -25,107 +27,70 @@ const toLogin = () => {
 /**
  * 请求失败后的错误统一处理
  * @param {Number} status 请求失败的状态码
- * @param other
+ * @return {boolean} 是否需要重试
  */
-const errorHandle = (status: number, other: string) => {
+const errorHandle = (status: number): boolean => {
     // 状态码判断
     switch (status) {
 
-        // case 302: ElMessage.error('接口重定向了！');
-        //     break;
+        case void 0:
+            ElNotification({
+                title: '错误',
+                type:"error",
+                message: "系统繁忙:"+ status,
+            });
+            break;
+
+        case 500:
+            ElNotification({
+                title: '错误',
+                type:"error",
+                message: "服务器开小差了～:"+ status,
+            });
+            break;
+
+        case 401:
+            ElNotification({
+                title: '错误',
+                message: "token登录失效:"+ status,
+                type: 'error',
+            })
+            const user = useUserStore()
+            user.token = ""
+            toLogin()
+            break;
+
+        case 429:
+            ElNotification({
+                title: '错误',
+                type:"error",
+                message: "您的操作过于频繁, 请稍后重试~:"+ status,
+            });
+
         case 400:
             ElNotification({
                 title: '错误',
-                message: "请求参数错误，服务器无法处理==>" + status,
+                message: "请求参数错误，服务器无法处理:"+status,
                 type: 'error',
             })
             break;
-        // // 401: 未登录
-        // // 未登录则跳转登录页面，并携带当前页面的路径
-        // // 在登录成功后返回当前页面，这一步需要在登录页操作。
-        // case 401: //重定向
-        //     ElMessage.error("token:登录失效==>" + status + ":" + store.state.Roles)
-        //     storage.remove(store.state.Roles)
-        //     storage.get(store.state.Roles)
-        //     router.replace({
-        //         path: '/Login',
-        //     });
-        //     break;
-        // // 403 token过期
-        // // 清除token并跳转登录页
-        // case 403:
-        //     ElMessage.error("登录过期,用户得到授权，但是访问是被禁止的==>" + status)
-        //     // store.commit('token', null);
-        //     setTimeout(() => {
-        //         router.replace({
-        //             path: '/Login',
-        //         });
-        //     }, 1000);
-        //     break;
+
         case 404:
             ElNotification({
                 title: '错误',
-                message: "请求地址不存在==>" + status,
+                message: "请求地址不存在:" + status,
                 type: 'error',
             })
             break;
-        // case 406:
-        //     ElMessage.error("请求的格式不可得==>" + status)
-        //     break;
-        // case 408: ElMessage.error(" 请求超时！")
-        //     break;
-        // case 410:
-        //     ElMessage.error("请求的资源被永久删除，且不会再得到的==>" + status)
-        //     break;
-        // case 422:
-        //     ElMessage.error("当创建一个对象时，发生一个验证错误==>" + status)
-        //     break;
-        // case 500:
-        //     ElMessage.error("服务器发生错误，请检查服务器==>" + status)
-        //     break;
-        // case 502:
-        //     ElMessage.error("网关错误==>" + status)
-        //     break;
-        // case 503:
-        //     ElMessage.error("服务不可用，服务器暂时过载或维护==>" + status)
-        //     break;
-        // case 504:
-        //     ElMessage.error("网关超时==>" + status)
-        //     break;
         default:
             ElNotification({
                 title: '错误',
-                message: "其他错误错误==>" + status,
+                message: "其他错误错误:" + status,
                 type: 'error',
             })
     }
+    return true
 }
-
-// 定义接口
-interface PendingType {
-    url?: string;
-    method?: Method;
-    params: any;
-    data: any;
-}
-// 取消重复请求
-const pending: Array<PendingType> = [];
-const CancelToken = axios.CancelToken;
-
-// 移除重复请求
-// const removePending = (config: AxiosRequestConfig) => {
-//     for (const key in pending) {
-//         const item: number = +key;
-//         const list: PendingType = pending[key];
-//         // 当前请求在数组中存在时执行函数体
-//         if (list.url === config.url && list.method === config.method && JSON.stringify(list.params) === JSON.stringify(config.params) && JSON.stringify(list.data) === JSON.stringify(config.data)) {
-//             // 执行取消操作
-//             list.cancel('操作太频繁，请稍后再试');
-//             // 从数组中移除记录
-//             pending.splice(item, 1);
-//         }
-//     }
-// };
 
 /* 实例化请求配置 */
 const instance = axios.create({
@@ -150,29 +115,25 @@ const instance = axios.create({
  */
 instance.interceptors.request.use(
     config => {
-        const user=useUserStore()
+        const user = useUserStore()
 
-        // removePending(config);
-        // @ts-ignore
-        pending.push({ url: config.url, method: config.method, params: config.params, data: config.data});
-        // 登录流程控制中，根据本地是否存在token判断用户的登录情况
+       // 登录流程控制中，根据本地是否存在token判断用户的登录情况
         // 但是即使token存在，也有可能token是过期的，所以在每次的请求头中携带token
         // 后台根据携带的token判断用户的登录情况，并返回给我们对应的状态码
         // 而后我们可以在响应拦截器中，根据状态码进行一些统一的操作。
         const token = user.token;
         // localStorage.setItem('token', token);
-        if(token!=""){
-            config.headers.token=token
+        if (token != "") {
+            config.headers.token = token
         }
 
-        if(config.url?.includes('/v1')){
-            config.baseURL='https://api-prod.lulufind.com'
+        if (config.url?.includes('/v1')) {
+            config.baseURL = 'https://api-prod.lulufind.com'
 
-        }
-        else {
+        } else {
             config.headers["Content-Type"] = "application/x-www-form-urlencoded"
             let headers = {};
-            console.log(config.data)
+            // console.log(config.data)
             let name;
             for (name in config.data) { //把req.data 依次存入headers。并在每个item 结尾 加上""
                 // @ts-ignore
@@ -191,7 +152,6 @@ instance.interceptors.request.use(
         ElMessage.error(error.data.error.Message);
         return Promise.reject(error.data.error.Message);
     }
-
 )
 
 // 响应拦截器
@@ -207,35 +167,36 @@ instance.interceptors.response.use(function (config) {
         // 请求失败
     }, function (error) {
 
-        const { response } = error;
+        const {response} = error;
         if (response) {
-            errorHandle(response.status, response.data.Message);
-
-            // 超时重新请求
-            const config = error.config;
-            // 全局的请求次数,请求的间隙
-            const [RETRY_COUNT, RETRY_DELAY] = [3, 1000];
-
-            if (config && RETRY_COUNT) {
-                // 设置用于跟踪重试计数的变量
-                config.__retryCount = config.__retryCount || 0;
-                // 检查是否已经把重试的总数用完
-                if (config.__retryCount >= RETRY_COUNT) {
-                    return Promise.reject(response || { Message: error.Message });
-                }
-                // 增加重试计数
-                config.__retryCount++;
-                // 创造新的Promise来处理指数后退
-                const backoff = new Promise<void>((resolve) => {
-                    setTimeout(() => {
-                        resolve();
-                    }, RETRY_DELAY || 1);
-                });
-                // instance重试请求的Promise
-                return backoff.then(() => {
-                    return instance(config);
-                });
-            }
+            // const retryFlag=
+                errorHandle(response.status);
+            //
+            // // 超时重新请求
+            // const config = error.config;
+            // // 全局的请求次数,请求的间隙
+            // const [RETRY_COUNT, RETRY_DELAY] = [3, 1000];
+            //
+            // if (config && RETRY_COUNT) {
+            //     // 设置用于跟踪重试计数的变量
+            //     config.__retryCount = config.__retryCount || 0;
+            //     // 检查是否已经把重试的总数用完
+            //     if (config.__retryCount >= RETRY_COUNT) {
+            //         return Promise.reject(response || {Message: error.Message});
+            //     }
+            //     // 增加重试计数
+            //     config.__retryCount++;
+            //     // 创造新的Promise来处理指数后退
+            //     const backoff = new Promise<void>((resolve) => {
+            //         setTimeout(() => {
+            //             resolve();
+            //         }, RETRY_DELAY || 1);
+            //     });
+            //     // instance重试请求的Promise
+            //     return backoff.then(() => {
+            //         return instance(config);
+            //     });
+            // }
 
             return Promise.reject(response);
         } else {

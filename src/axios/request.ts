@@ -8,24 +8,6 @@ export class Request {
      * @param {string} url 路径
      * @param {object} params 参数
      */
-    static get = (url: string, params?: any) => {
-        return new Promise<AxiosResponse<any,any>>((resolve, reject) => {
-            axios.get(url, { params: params }).then(res => {
-                resolve(res);
-            }).catch(err => {
-                reject(err);
-            })
-        })
-    }
-
-    static post = (url: string, params?: any) => {
-        return new Promise<AxiosResponse<any,any>>((resolve, reject) => {
-            // console.log(params)
-            axios.post(url, params).then(res => {
-                resolve(res);
-            }).catch(err => {
-                reject(err);
-            })
-        })
-    }
+    static get = (url: string, params?: any) => axios.get(url, {params: params})
+    static post = (url: string, params?: any) => axios.post(url, params)
 }

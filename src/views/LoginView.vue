@@ -30,7 +30,7 @@ function onLoginSuccess() {
           <el-tab-pane label="二维码登录">
             <QrLogin  @loginSuccess="onLoginSuccess"/>
           </el-tab-pane>
-          <el-tab-pane label="密码登录">
+          <el-tab-pane label="密码登录(暂未开发)" disabled>
             <UsernameAndPasswordLogin/>
           </el-tab-pane>
         </el-tabs>

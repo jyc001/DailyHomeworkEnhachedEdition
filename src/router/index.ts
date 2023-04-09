@@ -12,6 +12,10 @@ const router = createRouter({
       path: '/work/list',
       name:'workList',
       component: () => import('../views/works/WorksBase.vue')
+    },{
+      path: '/work/:workId/detail',
+      name:'workDetail',
+      component: () => import('../views/works/WorkDetail.vue')
     },
   ]
 })

@@ -6,18 +6,28 @@ import {$ref} from "vue/macros";
 import {api} from "@/api";
 import {ElMessage} from "element-plus";
 
-const user=useUserStore()
+const user = useUserStore()
 // console.log(user.openId)
-let {userRealName}=$(storeToRefs(user))
-let works=$ref({})
-api.findWork.findWorkNewVersion2().then(resp=>{
-    works=resp.data
+let {userRealName} = $(storeToRefs(user))
+let works = $ref<any>({})
+api.Works.findWorkNewVersion().then(data => {
+    works = data
 })
 </script>
 
 <template>
-<h1>用户名：{{userRealName}}</h1>
-  <textarea>{{works}}</textarea>
+    <h1>用户名：{{ userRealName }}</h1>
+    <textarea disabled>{{works}}</textarea>
+    <el-collapse>
+        <el-collapse-item v-for="work in works">
+            <template #title>
+                <router-link :to='`/work/${work.workId}/detail`'>
+                    <el-text>{{ work.workTime }}{{ work.submitText }}的{{ work.subject }}作业</el-text>
+                </router-link>
+            </template>
+            <el-text>{{work.workDetail}}</el-text>
+        </el-collapse-item>
+    </el-collapse>
 </template>
 
 <style scoped>

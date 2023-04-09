@@ -1,70 +1,70 @@
 export interface UserInfo {
-    openId: string
-    userRealName: string
-    userAvatar: string
-    userPhone: string
-    unionId: any
-    userSubject: string
-    familyType: number
-    userType: number
-    mrid: number
-    school: School
-    groups: Group[]
-    operator: boolean
-    platform: number
-    brand: string
-    model: string
-    system: any
-    wxVersion: string
-    userNum: string
-    userIdentity: string
-    userExist: number
-    divSubject: any
-    login: number
-    userRegTime: number
-    userLoginTime: number
     appName: string
-    pinCode: any
-    student: Student
-    usersCount: any
+    brand: string
+    divSubject: any
+    familyType: number
     fwhFlag: boolean
+    groups: Group[]
+    login: number
+    model: string
+    mrid: number
+    openId: string
+    operator: boolean
+    pinCode: any
+    platform: number
+    school: School
+    student: Student
+    system: any
+    unionId: any
+    userAvatar: string
+    userExist: number
+    userIdentity: string
+    userLoginTime: number
+    userNum: string
+    userPhone: string
+    userRealName: string
+    userRegTime: number
+    userSubject: string
+    userType: number
+    usersCount: any
+    wxVersion: string
 }
 
 export interface School {
-    schoolName: string
-    schoolUrl: string
-    schoolCode: number
-    schoolType: number
-    schoolLevel: number
-    place: string
-    remark: string
-    province: string
     city: string
     county: string
+    kind: number
     openId: string
     password: any
+    place: string
+    province: string
+    remark: string
     schoolCnt: any
+    schoolCode: number
     schoolId: number
-    kind: number
+    schoolLevel: number
+    schoolName: string
+    schoolType: number
+    schoolUrl: string
 }
 
 export interface Group {
     classCnt: number
+    classGroup: number
+    classId: number
     classNum: number
     divClass: any
-    classId: number
-    isRename: number
     enrollmentYear: number
-    classGroup: number
+    isRename: number
     password: any
 }
 
 export interface Student {
-    name: string
     avatar: any
-    studentId: string
-    sids: any[]
     classId: number
+    name: string
+    sids: any[]
+    studentId: string
     userCount: any
     userNum: string
 }
