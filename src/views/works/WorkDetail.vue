@@ -31,6 +31,7 @@ api.Works.getWorkDetail(workId.value as unknown as number).then(data => {
                       :zoom-rate="1.2"
                       :preview-src-list="user.submitCoverList"
                       :src="imageUrl"
+                      :infinite="false"
                       :initial-index="index"
                       fit="contain"
             />
