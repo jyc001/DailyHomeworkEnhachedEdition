@@ -9,7 +9,7 @@ const workId = useRouteParams('workId')
 let work = $ref<any>({})
 api.Works.getWorkDetail(workId.value as unknown as number).then(data => {
     work = data
-    console.log(work)
+    // console.log(work)
 })
 </script>
 
