@@ -3,6 +3,7 @@ import {defineStore} from 'pinia'
 import type {UserInfo} from "@/interface/User";
 import {useLocalStorage} from "@vueuse/core";
 import {ElNotification} from "element-plus";
+import router from "@/router";
 
 export const useUserStore = defineStore('userInfo', () => {
     const token = useLocalStorage("token","")
@@ -20,6 +21,7 @@ export const useUserStore = defineStore('userInfo', () => {
             message: '加载已登录用户信息成功',
             type: 'success',
         })
+        router.replace("/work/list")
 
     }
 
