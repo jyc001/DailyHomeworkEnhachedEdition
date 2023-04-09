@@ -31,11 +31,12 @@ class api {
         checkQrCode: (code: string) => Request.post('api/v1/auth/checkQrCode', {"code": code})
 
     }
+
     public static Works = {
 
         findWorkNewVersion: (start = 0, num = 12, beginTime: Date = new Date(1990, 0, 1, 0, 0, 0), endTime: Date = new Date(), limit: number = 1) => {
             // const user = useUserStore();
-            return new Promise<object>((resolve, reject) => {
+            return new Promise<any[]>((resolve, reject) => {
                 Request.post('mrzy/mrzypc/findWorkNewVersion', {
                     start: start,
                     num: num,
@@ -59,13 +60,15 @@ class api {
                         })
                         resolve(resp.data.data)
                     } else {
-                        console.log(resp.data)
-                        ElNotification({
-                            title: '出现错误',
-                            message: '状态码:' + resp.data.code + "错误原因：" + resp.data.desc,
-                            type: 'error',
-                        })
-                        reject()
+                        // console.log(resp.data)
+                        if (resp.data.code != 201) {
+                            ElNotification({
+                                title: '出现错误',
+                                message: '状态码:' + resp.data.code + "错误原因：" + resp.data.desc,
+                                type: 'error',
+                            })
+                        }
+                        reject(resp.data.code)
                     }
                 })
             })
