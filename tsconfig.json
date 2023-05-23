@@ -1,29 +1,11 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.web.json",
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    },
-    "types": ["unplugin-vue-macros/macros-global" /* ... */],
-  },
-
+  "files": [],
   "references": [
     {
-      "path": "./tsconfig.config.json"
+      "path": "./tsconfig.node.json"
+    },
+    {
+      "path": "./tsconfig.app.json"
     }
-  ],
-  "vueCompilerOptions": {
-    "plugins": [
-      "@vue-macros/volar/define-options",
-      "@vue-macros/volar/define-models",
-      "@vue-macros/volar/define-props",
-      "@vue-macros/volar/define-props-refs",
-      "@vue-macros/volar/short-vmodel",
-      "@vue-macros/volar/define-slots",
-      "@vue-macros/volar/export-props"
-    ]
-    // ...
-  }
+  ]
 }
