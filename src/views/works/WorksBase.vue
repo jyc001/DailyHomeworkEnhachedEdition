@@ -44,7 +44,7 @@ loadData();
 <template>
     <el-button type="danger" @click="token='';router.replace('/')">退出登录</el-button>
     <h1>用户名：{{ userRealName }}</h1>
-    <textarea disabled>{{works}}</textarea>
+<!--    <textarea disabled>{{works}}</textarea>-->
     <el-collapse v-infinite-scroll="loadData" :infinite-scroll-disabled="disabled">
         <el-collapse-item v-for="work in works">
             <template #title>
