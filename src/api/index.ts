@@ -3,10 +3,10 @@
 //，在全局方法中会说到使用 插件的方式去挂载。
 // api.ts
 import {Request} from "@/axios/request";
-import {useUserStore} from "@/stores/User";
-import type {AxiosResponse} from "axios";
-import {ElNotification} from "element-plus";
 import luluData from "@/luluData";
+import type {ResponseWorkDetail, SubmitUser} from "@/interface/ResponseWorkDetail";
+// @ts-ignore
+import {ElNotification} from "element-plus";
 
 function formatDate(date: Date) {
     //日期
@@ -18,17 +18,16 @@ function formatDate(date: Date) {
     const hh = String(date.getHours()).padStart(2, '0');       //获取当前小时数(0-23)
     const mm = String(date.getMinutes()).padStart(2, '0');     //获取当前分钟数(0-59)
     const ss = String(date.getSeconds()).padStart(2, '0');     //获取当前秒数(0-59)
-    const today = yyyy + '-' + MM + '-' + DD + ' ' + hh + ':' + mm + ':' + ss;
-    return today
+    return yyyy + '-' + MM + '-' + DD + ' ' + hh + ':' + mm + ':' + ss
 }
 
 
 class api {
     /* api接口模块 */
     public static Login = {
-        genQrCode: () => Request.post('api/v1/auth/genQrCode'),
+        genQrCode: () => Request.post<any>('api/v1/auth/genQrCode'),
         // genQrCode:() => Request.post('/auth/genQrCode'),
-        checkQrCode: (code: string) => Request.post('api/v1/auth/checkQrCode', {"code": code})
+        checkQrCode: (code: string) => Request.post<any>('api/v1/auth/checkQrCode', {"code": code})
 
     }
 
@@ -37,7 +36,7 @@ class api {
         findWorkNewVersion: (start = 0, num = 12, beginTime: Date = new Date(1990, 0, 1, 0, 0, 0), endTime: Date = new Date(), limit: number = 1) => {
             // const user = useUserStore();
             return new Promise<any[]>((resolve, reject) => {
-                Request.post('mrzy/mrzypc/findWorkNewVersion', {
+                Request.post<any>('mrzy/mrzypc/findWorkNewVersion', {
                     start: start,
                     num: num,
                     beginTime: formatDate(beginTime),
@@ -76,8 +75,8 @@ class api {
         },
         getWorkDetail: (workId: number) => {
             // const user = useUserStore();
-            return new Promise<object>((resolve, reject) => {
-                Request.post('mrzy/mrzypc/getWorkDetail', {
+            return new Promise<ResponseWorkDetail>((resolve, reject) => {
+                Request.post<ResponseWorkDetail>('mrzy/mrzypc/getWorkDetail', {
                     workId: workId
                 }).then(resp => {
                     if (resp.data.code == 200) {
@@ -87,7 +86,7 @@ class api {
                             resp.data.data.submitInfo.statusImg = "http://img2.lulufind.com/home_tag_status_" + resp.data.data.submitInfo.status + ".png"
                             resp.data.data.submitInfo.submitScoreImg = resp.data.data.submitInfo.submitScore ? "http://img2.lulufind.com/home_tag_status_goodwork.png" : null
                         }
-                        resp.data.data.submitUser.forEach((user: any) => {
+                        resp.data.data.submitUser.forEach((user: SubmitUser) => {
                             user.submitText = (user.submitFlag == 1) ? "已提交" : "未提交"
                             if (user.submitCover != null) {
                                 user.submitCoverList = user.submitCover.split("|")
@@ -95,6 +94,8 @@ class api {
                             }
                         })
                         resp.data.data.submitText = (resp.data.data.submit == 1) ? "已提交" : "未提交"
+                        resp.data.data.className = luluData.gradeNames[resp.data.data.classGroup-1] + resp.data.data.classNum + '班'
+                        resp.data.data.workTimeDate=new Date(resp.data.data.workTime)
                         resolve(resp.data.data)
                     } else {
                         console.log(resp.data)

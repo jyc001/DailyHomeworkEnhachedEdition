@@ -1,5 +1,4 @@
 // index.ts
-import {ElMessage, ElNotification} from "element-plus";
 import type {AxiosRequestConfig, Method} from "axios";
 import axios from "axios";
 import {Base} from "@/axios/base";
@@ -11,6 +10,8 @@ import {base64} from "@/util/base64"
 import {md5} from "@/util/md5"
 
 import router from "@/router"
+// @ts-ignore
+import {ElNotification} from "element-plus";
 
 /**
  * 跳转登录页
@@ -149,7 +150,11 @@ instance.interceptors.request.use(
         return config;
     },
     error => {
-        ElMessage.error(error.data.error.Message);
+        ElNotification({
+            title: '错误',
+            message: error.data.error.Message,
+            type: 'error',
+        })
         return Promise.reject(error.data.error.Message);
     }
 )

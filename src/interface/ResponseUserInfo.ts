@@ -1,4 +1,4 @@
-export interface UserInfo {
+export interface ResponseUserInfo {
     appName: string
     brand: string
     divSubject: any

@@ -1,14 +1,15 @@
 import {computed, ref} from 'vue'
 import {defineStore} from 'pinia'
-import type {UserInfo} from "@/interface/User";
+import type {ResponseUserInfo} from "@/interface/ResponseUserInfo";
 import {useLocalStorage} from "@vueuse/core";
+// @ts-ignore
 import {ElNotification} from "element-plus";
 import router from "@/router";
 
 export const useUserStore = defineStore('userInfo', () => {
     const token = useLocalStorage("token", "")
     // const userInfo = ref<UserInfo>({} as UserInfo);
-    const userInfo = useLocalStorage<UserInfo>("userInfo", {} as UserInfo)
+    const userInfo = useLocalStorage<ResponseUserInfo>("userInfo", {} as ResponseUserInfo)
     const userRealName = computed((state) => {
         return userInfo.value.userRealName
     })
