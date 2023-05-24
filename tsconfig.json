@@ -8,11 +8,11 @@
       "path": "./tsconfig.app.json"
     }
   ],
-  "compilerOptions": {
-    // ...
-    "types": [
-      "unplugin-vue-macros/macros-global"
-      /* ... */
-    ]
-  }
+//  "compilerOptions": {
+//    // ...
+//    "types": [
+//      "unplugin-vue-macros/macros-global"
+//      /* ... */
+//    ]
+//  }
 }
