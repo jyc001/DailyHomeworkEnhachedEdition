@@ -19,7 +19,7 @@ mode.value = "auto"
         color: #1989fa;
       ">UP</div>
       </el-backtop>
-      <h2 class="vinfo">V1.R9-230523</h2>
+      <h2 class="vinfo">V2.Dev1-230524</h2>
 
 </template>
 
