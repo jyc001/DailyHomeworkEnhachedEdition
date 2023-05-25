@@ -4,6 +4,12 @@ import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
 // @ts-ignore
 import VueMacros from 'unplugin-vue-macros/vite'
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
+import {ElementPlusResolver} from 'unplugin-vue-components/resolvers'
+// @ts-ignore
+import ElementPlus from 'unplugin-element-plus/vite'
+import {transformShortVmodel} from '@vue-macros/short-vmodel'
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [
@@ -12,6 +18,15 @@ export default defineConfig({
                 vue: vue(),
                 // vueJsx: VueJsx(), // 如果需要
             },
+        }),
+        AutoImport({
+            resolvers: [ElementPlusResolver()],
+        }),
+        Components({
+            resolvers: [ElementPlusResolver()],
+        }),
+        ElementPlus({
+            // options
         }),
 
     ],

@@ -10,8 +10,9 @@
     "composite": true,
     "module": "ESNext",
     "types": [
-      "node",
-      "unplugin-vue-macros/macros-global"
+      "node"
+      //      "unplugin-vue-macros/macros-global",
+      //      "element-plus/global"
     ]
   }
 }

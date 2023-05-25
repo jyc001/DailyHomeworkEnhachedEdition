@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 
-import {useRouteParams} from "@vueuse/router";
 import {$ref} from "vue/macros";
 import {api} from "@/api";
 import WorkDetail from "./WorkDetail.vue";
 import router from "@/router";
 import type {RouteLocationRaw} from "vue-router";
 import type {ResponseWorkDetail} from "@/interface/ResponseWorkDetail";
+import {useRouteParams} from "@vueuse/router";
 
 const workId = useRouteParams('workId')
 let work = $ref<ResponseWorkDetail>({} as ResponseWorkDetail)
@@ -23,7 +23,7 @@ api.Works.getWorkDetail(workId.value as unknown as number).then(data => {
     <el-page-header @back="router.push('/work/list')">
       <template #breadcrumb>
         <el-breadcrumb separator="/">
-          <el-breadcrumb-item :to="'/work/list'">
+          <el-breadcrumb-item :to="{name:'workList'}">
             作业列表
           </el-breadcrumb-item>
           <el-breadcrumb-item>{{ workId }}</el-breadcrumb-item>
@@ -36,7 +36,7 @@ api.Works.getWorkDetail(workId.value as unknown as number).then(data => {
               :size="32"
               :src="work.subjectImage"
           />
-          <span class="font-600 mr-3"> {{ work.className}} </span>
+          <span class="font-600 mr-3"> {{ work.className }} </span>
           <span
               class="text-sm mr-2"
               style="color: var(--el-text-color-regular)"

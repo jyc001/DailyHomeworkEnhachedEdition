@@ -13,6 +13,7 @@ import router from "@/router"
 // @ts-ignore
 import {ElNotification} from "element-plus";
 
+
 /**
  * 跳转登录页
  * 携带当前页面路由，以期在登录页面完成登录后返回当前页面
@@ -152,10 +153,10 @@ instance.interceptors.request.use(
     error => {
         ElNotification({
             title: '错误',
-            message: error.data.error.Message,
+            message: error.data.desc,
             type: 'error',
         })
-        return Promise.reject(error.data.error.Message);
+        return Promise.reject(error.data.desc);
     }
 )
 
