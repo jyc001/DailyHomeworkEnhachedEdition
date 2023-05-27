@@ -5,7 +5,6 @@
 import {Request} from "@/axios/request";
 import luluData from "@/luluData";
 import type {ResponseWorkDetail, SubmitUser} from "@/interface/ResponseWorkDetail";
-// @ts-ignore
 import {ElNotification} from "element-plus";
 
 function formatDate(date: Date) {

@@ -1,5 +1,5 @@
 {
-  "extends": "@tsconfig/node19/tsconfig.json",
+  "extends": "@tsconfig/node18/tsconfig.json",
   "include": [
     "vite.config.*",
     "vitest.config.*",
@@ -7,12 +7,14 @@
     "playwright.config.*"
   ],
   "compilerOptions": {
+    "moduleResolution": "node",
     "composite": true,
     "module": "ESNext",
+
     "types": [
-      "node"
-      //      "unplugin-vue-macros/macros-global",
-      //      "element-plus/global"
+      "node",
+      "unplugin-vue-macros/macros-global",
+      "element-plus/global"
     ]
   }
 }

@@ -9,7 +9,6 @@ import Components from 'unplugin-vue-components/vite'
 import {ElementPlusResolver} from 'unplugin-vue-components/resolvers'
 // @ts-ignore
 import ElementPlus from 'unplugin-element-plus/vite'
-import {transformShortVmodel} from '@vue-macros/short-vmodel'
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [
