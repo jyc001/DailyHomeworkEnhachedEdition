@@ -2,7 +2,6 @@ import {computed, ref} from 'vue'
 import {defineStore} from 'pinia'
 import type {ResponseUserInfo} from "@/interface/ResponseUserInfo";
 import {useLocalStorage} from "@vueuse/core";
-// @ts-ignore
 import {ElNotification} from "element-plus";
 import router from "@/router";
 
