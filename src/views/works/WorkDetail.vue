@@ -104,6 +104,7 @@ api.Works.getWorkDetail(workId.value as unknown as number).then(data => {
                 :infinite="false"
                 :initial-index="index"
                 fit="contain"
+                loading="lazy"
       />
     </el-collapse-item>
   </el-collapse>
