@@ -23,7 +23,7 @@ api.Works.getWorkDetail(workId.value as unknown as number).then(data => {
     <template #header>
       <div class="card-header">
         <span>{{ work.workTime }}{{ work.submitText }}的{{ work.subject }}作业</span>
-        <el-divider direction="vertical" />
+        <el-divider direction="vertical"/>
         <span>作业ID:{{ workId }}</span>
       </div>
     </template>
@@ -46,6 +46,7 @@ api.Works.getWorkDetail(workId.value as unknown as number).then(data => {
                 :infinite="false"
                 :initial-index="index"
                 fit="contain"
+                loading="lazy"
       />
     </el-collapse-item>
   </el-collapse>
